@@ -1,0 +1,205 @@
+body{
+  margin: 0;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+a{
+  color: #337ab7;
+  text-decoration: none;
+}
+a:focus, a:hover {
+  color: #23527c;
+  text-decoration: underline;
+}
+a:active, a:hover {
+  outline: 0;
+}
+a.el-button:hover{
+  text-decoration: none;
+}
+.pull-left{float: left}
+.pull-right{float: right}
+.clear{clear: both}
+.none{display: none}
+.mt10{margin-top: 10px}
+.mt20{margin-top: 20px}
+.mt30{margin-top: 30px}
+.mb20{margin-bottom: 20px}
+.mt15{margin-top: 15px}
+.ml10{margin-left: 10px}
+.mr10{margin-right: 10px}
+.mr20{margin-right: 20px}
+.clear-margin{margin: 0;}
+.text-right{text-align: right}
+.text-left{text-align: left}
+.text-center{text-align: center}
+.panel {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.panel-head {
+  color: #333;
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  padding: 10px 15px;
+  border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.panel-body {
+  padding: 20px 15px;
+}
+
+.el-breadcrumb{margin-bottom: 20px;}
+
+.query-form {
+  padding-left: 20px;
+  padding-top: 20px;
+  background-color: #f2f2f2;
+}
+
+
+/**loading**/
+.spinner-loading {
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner-loading > div {
+  background-color: #8fccde;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner-loading .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner-loading .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner-loading .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner-loading .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+       transform: scaleY(1.0);
+       -webkit-transform: scaleY(1.0);
+     }
+}
+#page-loading{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -20px;
+}
+#body{
+  display: none;
+}
+
+.inline-block{display: inline-block;}
+.w300{width: 300px;}
+/*element table表头样式错位问题解决*/
+body .el-table th.gutter{
+  display: table-cell!important;
+}
+
+body .el-table colgroup.gutter{
+  display: table-cell!important;
+}
+
+/*报表下载按钮，重置elementui样式*/
+.download-wrapli{
+  background: transparent;
+  border:none;
+  list-style: none;
+  line-height: normal;
+}
+.download-wrapli .downLoad-btn{
+  float: right;
+  margin-top:20px;
+}
+.downLoad-btn.el-button--primary.is-plain {
+  background: rgb(84, 92, 100);
+  color: #ffffff;
+  position: relative;
+  padding: 12px 20px 12px 30px;
+}
+.downLoad-btn.el-button--primary.is-plain .el-icon-download {
+  color: #ffffff;
+  margin-right: 0;
+  position: absolute;
+  left: 8px;
+  top:12px;
+}
+.downLoad-btn.el-button--primary.is-plain >span{
+  margin-left:0;
+}
+
+
+.download-wrapli .downLoad-btn{
+  margin-top:10px;
+}
+/*下载列表弹窗样式重置*/
+.downLoad-dialog .el-dialog__body{
+  padding-top:0;
+}
+/*费率去除input type=number时的默认样式*/
+.payFeeForm input[type=number] {
+  -moz-appearance: textfield;
+}
+.payFeeForm input[type=number]::-webkit-inner-spin-button,
+.payFeeForm input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.tip{
+  line-height: 40px;
+  display: inline-block;
+  padding-left: 10px;
+}
+.date-picker{
+  width: 104px;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
