@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="pull-left" :style="{display: isShow ? 'block' : 'none'}">
+    <div class="pull-left" :style="{display: isShow ? 'block' : 'none',zIndex: 9}">
       <slot name="left-extend"></slot>
       <slot name="left-number"></slot>
     </div>
