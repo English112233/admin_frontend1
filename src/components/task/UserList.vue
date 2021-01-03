@@ -368,6 +368,7 @@
         this.completed = completed
       },
       submitTask () {
+        console.error(this.taskCompleted)
         if (this.taskCompleted.wangwang.trim() === '') {
           this.$message.error('请填写旺旺号')
           return
@@ -375,6 +376,10 @@
         if (typeof this.taskCompleted.completedAt === 'object') {
           this.taskCompleted.completedAt = DateUtil.format('Y-m-d H:i:s', this.taskCompleted.completedAt.getTime() / 1000)
         }
+        this.taskCompleted.mobile = this.taskCompleted.mobile.replace(/ /g, '')
+        this.taskCompleted.wangwang = this.taskCompleted.wangwang.replace(/ /g, '')
+        this.taskCompleted.orderNo = this.taskCompleted.orderNo.replace(/ /g, '')
+        this.taskCompleted.remark = this.taskCompleted.remark.replace(/ /g, '')
         const self = this
         self.$post({
           url: '/taskItem/update.do',
