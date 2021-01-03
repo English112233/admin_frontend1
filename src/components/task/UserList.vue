@@ -368,7 +368,6 @@
         this.completed = completed
       },
       submitTask () {
-        console.error(this.taskCompleted)
         if (this.taskCompleted.wangwang.trim() === '') {
           this.$message.error('请填写旺旺号')
           return
