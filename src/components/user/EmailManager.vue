@@ -121,13 +121,9 @@
         })
       },
       handleEdit (row) {
-        console.error(row)
         this.centerDialogVisible = true
         this.dialogContent = row
         this.dialogTitle = '编辑'
-      },
-      handleClick (row) {
-        console.error(row)
       },
       determineDialog () {
         if (this.dialogTitle === '编辑') {
@@ -191,10 +187,6 @@
           data: this.qs.stringify({
             fuzzy: Number(!this.fuzzyQuerySwich)
           })
-        }).then((response) => {
-          console.error(response)
-        }).catch((error) => {
-          console.log(error)
         })
       },
       newlyBuild () {
