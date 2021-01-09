@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "art-dialog": "^7.0.0",
+    "axios": "^0.21.1",
     "bluesdk-bank-no": "^1.0.2",
     "bluesdk-base-enum": "^1.0.5",
     "bluesdk-cookie": "^1.0.6",
@@ -40,8 +41,10 @@
     "element-ui": "2.4.11",
     "es6-promise": "^4.2.8",
     "jquery": "^3.4.1",
+    "qs.js": "^0.1.12",
     "tdw-copy-text": "^1.0.1",
     "vue": "^2.6.10",
+    "vue-axios": "^3.2.2",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^2.8.1",
     "vuex": "^3.1.1"

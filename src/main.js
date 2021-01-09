@@ -16,6 +16,8 @@ import commonPlugin from './plugins/common'
 import App from './App.vue'
 import notifierPage from './modules/notifier-page/notifierPage'
 import store from './store' // 引入store
+import axios from 'axios'
+import qs from 'qs'
 
 require('es6-promise').polyfill()
 Vue.use(ElementUI)
@@ -32,6 +34,10 @@ Vue.use(formatPlugin)
 Vue.use(titlePlugin)
 Vue.use(commonPlugin)
 Vue.config.productionTip = false
+// 全局注册，使用方法为:this.$axios
+Vue.prototype.$axios = axios
+// 全局注册，使用方法为:this.qs
+Vue.prototype.qs = qs
 
 /* eslint-disable no-new */
 new Vue({

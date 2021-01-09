@@ -133,6 +133,19 @@
               'moduleId': 30,
               'moduleName': '员工账号'
             })
+            vue.menuList.push(
+              {
+                'flag': '',
+                'menus': [
+                  {
+                    'menuName': '邮件详情',
+                    'sort': 100,
+                    'uri': '/user/email.do'
+                  }
+                ],
+                'moduleId': 50,
+                'moduleName': '邮件管理'
+              })
           } else {
             vue.menuList.push({
               'flag': '',
