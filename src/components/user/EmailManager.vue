@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="是否接受消息" label-width="120px">
+            <el-form-item label="是否接收消息" label-width="120px">
               <el-switch
                 v-model="fuzzyQuerySwich"
                 active-color="#13ce66"
@@ -99,6 +99,7 @@
     },
     created: function () {
       this.getDataList()
+      this.getEmailAll()
     },
     methods: {
       getDataList () {
@@ -115,6 +116,19 @@
               item.disabled = !item.disabled
             })
             this.data = response.data.data.records
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
+      getEmailAll () {
+        this.$axios({
+          method: 'post',
+          url: '/api/email/findGlobalEmailReminder.do',
+          data: this.qs.stringify({})
+        }).then((response) => {
+          if (response) {
+            this.fuzzyQuerySwich = !response.data.data
           }
         }).catch((error) => {
           console.log(error)
