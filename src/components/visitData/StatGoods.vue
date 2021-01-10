@@ -261,6 +261,7 @@
         taskRest: 0,
         disableHours: {},
         multipleSelection: [],
+        copymultipleSelection: [],
         checkRowList: {},
         firstLoad: true
       }
@@ -313,6 +314,21 @@
     methods: {
       handleSelectionChange (val) {
         this.multipleSelection = val
+        let copyArr1 = []
+        let copyArr2 = []
+        if (this.multipleSelection.length < this.copymultipleSelection.length) {
+          this.copymultipleSelection.forEach(item => {
+            copyArr1.push(item.id)
+          })
+          this.multipleSelection.forEach(item1 => {
+            copyArr2.push(item1.id)
+          })
+          copyArr1.forEach(item3 => {
+            if (copyArr2.indexOf(item3) === -1) {
+              this.checkRowList[item3] = 0
+            }
+          })
+        }
         let number = 0
         this.checkList = []
         this.multipleSelection.forEach(item => {
@@ -334,6 +350,7 @@
           }
           this.checkList = []
         }
+        this.copymultipleSelection = val
       },
       handleChangeNum (value, row) {
         this.checkRowList[row.id] = value
