@@ -9,13 +9,21 @@ export default new Vuex.Store({
     // excel下载相关
     downloadFiles: {
       openTimerTask: false, // 是否启用定时获取下载列表任务
-      isSureOpen: false // 是否确定允许打开弹窗
+      isSureOpen: false, // 是否确定允许打开弹窗
+      shopDetails: {
+        shopName: '',
+        shopId: 0
+      }
     }
   },
   getters: {},
   mutations: {
     changeStateVal ({ downloadFiles }, { key, value }) {
       downloadFiles[key] = value
+    },
+    changeShopDetails (state, details) {
+      state.downloadFiles.shopDetails.shopName = details.shopName
+      state.downloadFiles.shopDetails.shopId = details.shopId
     }
   },
   actions: {

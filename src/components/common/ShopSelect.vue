@@ -18,11 +18,12 @@
       return {
         map: {},
         content: [],
-        shopName: this.$url.getPara('shopName'),
-        shopId: this.$url.getPara('shopId')
+        shopName: this.$store.state.downloadFiles.shopDetails.shopName ? this.$store.state.downloadFiles.shopDetails.shopName : this.$url.getPara('shopName'),
+        shopId: this.$store.state.downloadFiles.shopDetails.shopId ? this.$store.state.downloadFiles.shopDetails.shopId : this.$url.getPara('shopId')
       }
     },
     beforeCreate () {
+      const that = this
       this.$getJson({
         url: '/shop/list.do',
         callback (vue, res) {
@@ -35,6 +36,7 @@
               init = true
               vue.shopId = shopId
               vue.change(shopId)
+              that.$store.commit('changeShopDetails', {shopName: that.map[vue.shopId], shopId: vue.shopId})
             }
           }
           if (!init) {
@@ -47,6 +49,7 @@
     },
     methods: {
       change (val) {
+        this.$store.commit('changeShopDetails', {shopName: this.map[val], shopId: val})
         this.$emit('change', { shopId: val, shopName: this.map[val] })
       }
     }
