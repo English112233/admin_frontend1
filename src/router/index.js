@@ -15,7 +15,7 @@ const UserUpdate = resolve => require(['@/components/user/Update'], resolve)
 
 // 邮件管理
 const EmailManager = resolve => require(['@/components/user/EmailManager'], resolve)
-
+const ShopEmailManager = resolve => require(['@/components/user/ShopEmailManager'], resolve)
 // 类别管理
 const StatGoods = resolve => require(['@/components/visitData/StatGoods'], resolve)
 const LogList = resolve => require(['@/components/visitData/LogList'], resolve)
@@ -58,7 +58,8 @@ export default new Router({
         { name: 'userCreate', path: 'user/create.do', component: UserCreate },
         { name: 'userUpdate', path: 'user/update.do/:userId', component: UserUpdate },
         // 邮件管理
-        { name: 'emailManager', path: 'user/email.do/', component: EmailManager },
+        { name: 'emailManager', path: 'user/useremail.do/', component: EmailManager },
+        { name: 'emailManager', path: 'user/shopemail.do/', component: ShopEmailManager },
         // 统计数据
         { name: 'statGoods', path: 'goods/stat.do', component: StatGoods },
         { name: 'LogList', path: 'visitLog/list.do', component: LogList },

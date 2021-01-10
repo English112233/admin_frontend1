@@ -4,17 +4,17 @@
       <el-form ref="form" :model="fuzzyQuery" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="8">
-          <el-form-item label="模糊查询" label-width="80px">
+          <!-- <el-form-item label="模糊查询" label-width="80px">
             <el-input v-model="fuzzyQuery.fuzzyQueryText"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           </el-col>
           <el-col :span="4">
-            <el-form-item >
+            <!-- <el-form-item >
               <el-button type="primary" @click="search">搜 索</el-button>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="是否接收邮件" label-width="120px">
+          <!-- <el-col :span="6"> -->
+            <el-form-item label="是否接收邮件" label-width="120px" class="isRight">
               <el-switch
                 v-model="fuzzyQuerySwich"
                 active-color="#13ce66"
@@ -22,35 +22,25 @@
                 @change="fuzzyQueryChange">
               </el-switch>
             </el-form-item>
-          </el-col>
+          <!-- </el-col> -->
           <el-col :span="6">
-            <el-form-item >
+            <!-- <el-form-item >
               <el-button type="primary" @click="newlyBuild">新 建</el-button>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
         </el-row>
       </el-form>
     </div>
     <el-table :data="data" border style="width: 100%" :header-cell-style="{background:'#009688',color:'#fff'}">
-      <el-table-column  prop="id" label="id" align="center" width="150">
+      <el-table-column  prop="shopId" label="id" align="center" width="250">
       </el-table-column>
-      <el-table-column prop="userName" label="用户名" align="center" width="200">
+      <el-table-column prop="shopName" label="店铺名" align="center" width="350">
       </el-table-column>
-      <el-table-column prop="userMailAddress" label="邮件地址" align="center" width="300">
+      <el-table-column prop="nowcount" label="当前店铺访问量" align="center" min-width="150">
       </el-table-column>
-      <el-table-column label="创建时间" align="center" width="300">
+      <el-table-column property="" align="center" label="接收邮件状态" width="400">
         <template slot-scope="scope">
-          {{$mTimeToDate(scope.row.createdAt)}}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column property="" align="center" label="接收邮件状态" width="300">
-        <template slot-scope="scope">
-          <el-switch active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.disabled" @change=tableSwichChange(scope.$index,scope.row)>
+          <el-switch active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.state" @change=tableSwichChange(scope.$index,scope.row)>
           </el-switch>
         </template>
       </el-table-column>
@@ -86,7 +76,7 @@
 
 <script>
   export default {
-    name: 'EmailManager',
+    name: 'ShopEmailManager',
     components: {},
     data: function () {
       return {
@@ -107,18 +97,14 @@
     methods: {
       getDataList () {
         this.$axios({
-          method: 'post',
-          url: '/api/email/list.do',
-          data: this.qs.stringify({
-            pageNum: 1,
-            pageSize: 50
-          })
+          method: 'get',
+          url: '/api/shop/list.do'
         }).then((response) => {
-          if (response && response.data && response.data.data && response.data.data.records) {
-            response.data.data.records.forEach(item => {
-              item.disabled = !item.disabled
+          if (response && response.data && response.data.data.length) {
+            response.data.data.forEach(item => {
+              item.state = !item.state
             })
-            this.data = response.data.data.records
+            this.data = response.data.data
           }
         }).catch((error) => {
           console.log(error)
@@ -187,12 +173,12 @@
       tableSwichChange (value, row) {
         this.$axios({
           method: 'post',
-          url: '/api/email/update.do',
+          url: '/api/shop/storeEmailUpdate.do',
           data: this.qs.stringify({
-            id: row.id,
-            userMailAddress: row.userMailAddress,
-            userName: row.userName,
-            disabled: Number(!row.disabled)
+            shopId: row.shopId,
+            shopName: row.shopName,
+            nowcount: row.nowcount,
+            state: Number(!row.state)
           })
         })
       },
@@ -244,5 +230,9 @@
   background: #f2f2f2;
   padding: 20px;
   margin-bottom: 30px;
+}
+.isRight {
+  position: absolute;
+  right: 100px;
 }
 </style>

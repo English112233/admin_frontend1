@@ -138,9 +138,14 @@
                 'flag': '',
                 'menus': [
                   {
-                    'menuName': '邮件详情',
+                    'menuName': '用户邮件详情',
                     'sort': 100,
-                    'uri': '/user/email.do'
+                    'uri': '/user/useremail.do'
+                  },
+                  {
+                    'menuName': '店铺邮件详情',
+                    'sort': 200,
+                    'uri': '/user/shopemail.do'
                   }
                 ],
                 'moduleId': 50,
