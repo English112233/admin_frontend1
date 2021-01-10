@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="是否接收消息" label-width="120px">
+            <el-form-item label="是否接收邮件" label-width="120px">
               <el-switch
                 v-model="fuzzyQuerySwich"
                 active-color="#13ce66"
@@ -34,18 +34,21 @@
     <el-table :data="data" border style="width: 100%">
       <el-table-column  prop="id" label="id" align="center" width="150">
       </el-table-column>
-      <el-table-column prop="userName" label="用户名" align="center" width="300">
+      <el-table-column prop="userName" label="用户名" align="center" width="200">
       </el-table-column>
       <el-table-column prop="userMailAddress" label="邮件地址" align="center" width="300">
       </el-table-column>
-      <el-table-column  prop="createdAt" label="创建时间" align="center" width="300">
+      <el-table-column label="创建时间" align="center" width="300">
+        <template slot-scope="scope">
+          {{$mTimeToDate(scope.row.createdAt)}}
+        </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>
-      <el-table-column property="" align="center" label="权限状态">
+      <el-table-column property="" align="center" label="接收邮件状态" width="300">
         <template slot-scope="scope">
           <el-switch active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.disabled" @change=tableSwichChange(scope.$index,scope.row)>
           </el-switch>
@@ -58,14 +61,14 @@
       width="30%"
       :close-on-click-modal="false"
       center>
-      <el-form :model="dialogContent" label-width="80px">
-        <el-form-item label="邮件地址">
-          <el-input v-model="dialogContent.userMailAddress"></el-input>
-        </el-form-item>
+      <el-form :model="dialogContent" label-width="120px">
         <el-form-item label="用户名">
           <el-input v-model="dialogContent.userName"></el-input>
         </el-form-item>
-        <el-form-item label="活动名称">
+        <el-form-item label="邮件地址">
+          <el-input v-model="dialogContent.userMailAddress"></el-input>
+        </el-form-item>
+        <el-form-item label="接收邮件状态">
           <el-switch
             v-model="dialogContent.disabled"
             active-color="#13ce66"
@@ -108,7 +111,7 @@
           url: '/api/email/list.do',
           data: this.qs.stringify({
             pageNum: 1,
-            pageSize: 20
+            pageSize: 50
           })
         }).then((response) => {
           if (response && response.data && response.data.data && response.data.data.records) {
@@ -222,7 +225,7 @@
           })
         }).then((response) => {
           if (response && response.data && response.data.data) {
-            response.data.data.records.forEach(item => {
+            response.data.data.forEach(item => {
               item.disabled = !item.disabled
             })
             this.data = response.data.data
