@@ -185,7 +185,7 @@
           method: 'post',
           url: '/api/email/onoffemailreminder.do',
           data: this.qs.stringify({
-            fuzzy: Number(!this.fuzzyQuerySwich)
+            emailAlerts: Number(!this.fuzzyQuerySwich)
           })
         })
       },
