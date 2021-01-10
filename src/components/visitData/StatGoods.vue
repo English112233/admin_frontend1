@@ -314,6 +314,7 @@
       handleSelectionChange (val) {
         this.multipleSelection = val
         let number = 0
+        this.checkList = []
         this.multipleSelection.forEach(item => {
           if (this.checkRowList[item.id]) {
             number += this.checkRowList[item.id]
