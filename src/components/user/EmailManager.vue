@@ -43,9 +43,10 @@
           {{$mTimeToDate(scope.row.createdAt)}}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
       <el-table-column property="" align="center" label="接收邮件状态" width="300">
@@ -141,6 +142,37 @@
         this.centerDialogVisible = true
         this.dialogContent = row
         this.dialogTitle = '编辑'
+      },
+      handleDelete (row) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios({
+            method: 'post',
+            url: '/api/email/deleteEmailUser.do',
+            data: this.qs.stringify({
+              id: row.id,
+              userMailAddress: row.userMailAddress,
+              userName: row.userName,
+              disabled: Number(!row.disabled)
+            })
+          }).then((response) => {
+            this.getDataList()
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }).catch((error) => {
+            console.log(error)
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
       },
       determineDialog () {
         if (this.dialogTitle === '编辑') {
