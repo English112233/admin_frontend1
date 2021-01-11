@@ -91,6 +91,7 @@
     components: {},
     data: function () {
       return {
+        title: '用户邮件详情',
         data: [],
         centerDialogVisible: false,
         dialogContent: {},
@@ -140,7 +141,7 @@
       },
       handleEdit (row) {
         this.centerDialogVisible = true
-        this.dialogContent = row
+        this.dialogContent = JSON.parse(JSON.stringify(row))
         this.dialogTitle = '编辑'
       },
       handleDelete (row) {

@@ -4,16 +4,9 @@
       <el-form ref="form" :model="fuzzyQuery" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="8">
-          <!-- <el-form-item label="模糊查询" label-width="80px">
-            <el-input v-model="fuzzyQuery.fuzzyQueryText"></el-input>
-          </el-form-item> -->
           </el-col>
           <el-col :span="4">
-            <!-- <el-form-item >
-              <el-button type="primary" @click="search">搜 索</el-button>
-            </el-form-item> -->
           </el-col>
-          <!-- <el-col :span="6"> -->
             <el-form-item label="是否接收邮件" label-width="120px" class="isRight">
               <el-switch
                 v-model="fuzzyQuerySwich"
@@ -22,23 +15,31 @@
                 @change="fuzzyQueryChange">
               </el-switch>
             </el-form-item>
-          <!-- </el-col> -->
           <el-col :span="6">
-            <!-- <el-form-item >
-              <el-button type="primary" @click="newlyBuild">新 建</el-button>
-            </el-form-item> -->
           </el-col>
         </el-row>
       </el-form>
     </div>
     <el-table :data="data" border style="width: 100%" :header-cell-style="{background:'#009688',color:'#fff'}">
-      <el-table-column  prop="shopId" label="id" align="center" width="250">
+      <el-table-column  prop="shopId" label="id" align="center" width="150">
       </el-table-column>
-      <el-table-column prop="shopName" label="店铺名" align="center" width="350">
+      <el-table-column prop="shopName" label="店铺名" align="center" width="250">
       </el-table-column>
       <el-table-column prop="nowcount" label="当前店铺访问量" align="center" min-width="150">
       </el-table-column>
-      <el-table-column property="" align="center" label="接收邮件状态" width="400">
+      <el-table-column prop="regularTime" label="定时任务周期（分钟）" align="center" min-width="180">
+      </el-table-column>
+      <el-table-column label="最后更新" align="center" min-width="150">
+        <template slot-scope="scope">
+          {{$mTimeToDate(scope.row.updatedAt)}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" min-width="80">
+        <template slot-scope="scope">
+          <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column property="" align="center" label="接收邮件状态" width="150">
         <template slot-scope="scope">
           <el-switch active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.state" @change=tableSwichChange(scope.$index,scope.row)>
           </el-switch>
@@ -48,19 +49,25 @@
     <el-dialog
       :title="dialogTitle"
       :visible.sync="centerDialogVisible"
-      width="30%"
+      width="35%"
       :close-on-click-modal="false"
       center>
-      <el-form :model="dialogContent" label-width="120px">
-        <el-form-item label="用户名">
-          <el-input v-model="dialogContent.userName"></el-input>
+      <el-form :model="dialogContent" label-width="160px">
+        <el-form-item label="店铺id">
+          <el-input v-model="dialogContent.shopId" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="邮件地址">
-          <el-input v-model="dialogContent.userMailAddress"></el-input>
+        <el-form-item label="店铺名">
+          <el-input v-model="dialogContent.shopName" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="当前店铺访问量">
+          <el-input v-model="dialogContent.nowcount" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="定时任务周期（分钟）">
+          <el-input v-model="dialogContent.regularTime"></el-input>
         </el-form-item>
         <el-form-item label="接收邮件状态">
           <el-switch
-            v-model="dialogContent.disabled"
+            v-model="dialogContent.state"
             active-color="#13ce66"
             inactive-color="#ff4949">
           </el-switch>
@@ -80,6 +87,7 @@
     components: {},
     data: function () {
       return {
+        title: '店铺邮件详情',
         data: [],
         centerDialogVisible: false,
         dialogContent: {},
@@ -125,46 +133,27 @@
       },
       handleEdit (row) {
         this.centerDialogVisible = true
-        this.dialogContent = row
+        this.dialogContent = JSON.parse(JSON.stringify(row))
         this.dialogTitle = '编辑'
       },
       determineDialog () {
-        if (this.dialogTitle === '编辑') {
-          this.$axios({
-            method: 'post',
-            url: '/api/email/update.do',
-            data: this.qs.stringify({
-              id: this.dialogContent.id,
-              userMailAddress: this.dialogContent.userMailAddress,
-              userName: this.dialogContent.userName,
-              disabled: 1
-            })
-          }).then((response) => {
-            this.getDataList()
-            this.centerDialogVisible = false
-            this.dialogContent = {}
-          }).catch((error) => {
-            console.log(error)
-          })
-        }
-        if (this.dialogTitle === '新建') {
-          this.$axios({
-            method: 'post',
-            url: '/api/email/createemaileuser.do',
-            data: this.qs.stringify({
-              id: this.dialogContent.id,
-              userMailAddress: this.dialogContent.userMailAddress,
-              userName: this.dialogContent.userName,
-              disabled: 1
-            })
-          }).then((response) => {
-            this.getDataList()
-            this.centerDialogVisible = false
-            this.dialogContent = {}
-          }).catch((error) => {
-            console.log(error)
-          })
-        }
+        this.$axios({
+          method: 'get',
+          url: '/api/shop/updateShopRegularTime.do',
+          params: {
+            shopId: this.dialogContent.shopId,
+            shopName: this.dialogContent.shopName,
+            nowcount: this.dialogContent.nowcount,
+            regularTime: this.dialogContent.regularTime,
+            state: Number(!this.dialogContent.state)
+          }
+        }).then((response) => {
+          this.getDataList()
+          this.centerDialogVisible = false
+          this.dialogContent = {}
+        }).catch((error) => {
+          console.log(error)
+        })
       },
       cancelDialog () {
         this.centerDialogVisible = false
