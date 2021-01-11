@@ -24,10 +24,14 @@
         <goods-select ref="goods-select" @change="updateGoods"/>
       </el-form-item>
 
+    </el-form>
+    <el-form :inline="true" :model="query" class="query-form">
       <el-form-item label="模糊查询" prop="fuzzy">
-        <el-input v-model="query.fuzzy" :clearable="true" @change="handleSearch"></el-input>
+        <el-input v-model="fuzzyValue" :clearable="true" @change="handleSearch"></el-input>
       </el-form-item>
-
+      <el-form-item>
+        <el-switch style="display: block；top:'10px'" v-model="value" active-color="#13ce66" inactive-color="#ff4949" active-text="模糊" inactive-text="精准" @change="handleSwich"></el-switch>
+      </el-form-item>
     </el-form>
 
     <el-table
@@ -87,6 +91,7 @@
         shopMap: {},
         query: {
           fuzzy: this.$url.getPara('fuzzy'),
+          preciseQuery: this.$url.getPara('preciseQuery'),
           shopId: this.$url.getPara('shopId'),
           shopName: this.$url.getPara('shopName'),
           goodsName: this.$url.getPara('goodsName'),
@@ -95,7 +100,9 @@
           orderColumn: 'visitTime',
           orderType: 'DESC',
           pageSize: this.$url.getPara('pageSize', 20)
-        }
+        },
+        fuzzyValue: this.$url.getPara('fuzzy') ? this.$url.getPara('fuzzy') : this.$url.getPara('preciseQuery'),
+        value: true
       }
     },
     components: {
@@ -110,6 +117,11 @@
         this.query.shopId = c.shopId
         this.query.shopName = c.shopName
         this.$refs['goods-select'].queryGoods(this.query.visitTime, c.shopId, this.query.goodsId)
+        if (this.$url.getPara('fuzzy')) {
+          this.value = true
+        } else {
+          this.value = false
+        }
         this.search()
       },
       updateTime (val) {
@@ -124,13 +136,31 @@
         this.query.goodsName = val.goodsName
         this.search()
       },
-      handleSearch () {
+      handleSearch (value) {
+        if (this.value) {
+          this.query.fuzzy = value
+          this.query.preciseQuery = ''
+        } else {
+          this.query.fuzzy = ''
+          this.query.preciseQuery = value
+        }
         this.search()
       },
       fetchData: function (url) {
         if (this.query.shopId) {
           this.$getJson({ url: url })
         }
+      },
+      handleSwich (value) {
+        if (!this.fuzzyValue) return
+        if (value) {
+          this.query.fuzzy = this.fuzzyValue
+          this.query.preciseQuery = ''
+        } else {
+          this.query.preciseQuery = this.fuzzyValue
+          this.query.fuzzy = ''
+        }
+        this.search()
       }
     }
   }
