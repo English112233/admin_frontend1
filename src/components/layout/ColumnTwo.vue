@@ -5,9 +5,9 @@
       <router-link :to="{ name: 'home'}" id="logo">
         运营后台
       </router-link>
-      <div id="setting-form">
+      <div id="setting-form" v-show="timeShow">
         {{$mTimeToDate(time)}}
-      <el-button size="small" type="success" @click="getTimes($event)">手动更新</el-button>
+        <el-button size="small" type="success" @click="getTimes($event)">手动更新</el-button>
       </div>
 
       <!--  <div id="setting-form">
@@ -79,7 +79,8 @@
 
         },
         time: 0,
-        fetchNewTaskJob: null
+        fetchNewTaskJob: null,
+        timeShow: false
       }
     },
     created: function () {
@@ -87,10 +88,12 @@
       setInterval(() => {
         this.getHeaderTime()
       }, 90000)
+      const that = this
       this.$getJson({
         url: '/user/isManager.do',
         callback: function (vue, res) {
           vue.visible = true
+          that.timeShow = res.data
           if (res.data) {
             vue.menuList.push(
               {
@@ -186,6 +189,7 @@
     },
     methods: {
       getTimes () {
+        if (this.timeShow) return
         this.$axios({
           method: 'post',
           url: 'api/shop/manualUpdate.action'
