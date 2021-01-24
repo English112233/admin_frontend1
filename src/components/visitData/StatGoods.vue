@@ -43,7 +43,17 @@
 
     <el-form :inline="true" :model="query" class="query-form" onsubmit="return false">
       <el-form-item label="关键字" prop="keywordValue">
-        <el-input v-model="query.keywordValue" :clearable="true" @change="searchByKeyword"></el-input>
+        <el-input v-model="fuzzyValue" :clearable="true" @change="searchByKeyword"></el-input>
+      </el-form-item>
+
+      <el-form-item label="" prop="keywordValue">
+        <el-switch
+          v-model="fuzzyQuerySwich"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+          active-text="精准" inactive-text="模糊"
+          @change="fuzzyQueryChange">
+        </el-switch>
       </el-form-item>
     </el-form>
 
@@ -237,6 +247,7 @@
           shopId: this.$url.getPara('shopId'),
           shopName: this.$url.getPara('shopName'),
           keywordValue: this.$url.getPara('keywordValue'),
+          preciseQuery: this.$url.getPara('preciseQuery'),
           goodsName: this.$url.getPara('goodsName'),
           goodsId: this.$url.getPara('goodsId'),
           dateBegin: this.$url.getPara('dateBegin', this.$route.query.tradeDate),
@@ -246,6 +257,8 @@
           commonDateRange: this.$url.getPara('commonDateRange', 'yesterday'),
           pageSize: this.$url.getPara('pageSize', 20)
         },
+        fuzzyValue: this.$url.getPara('keywordValue') ? this.$url.getPara('keywordValue') : this.$url.getPara('preciseQuery'),
+        fuzzyQuerySwich: !!this.$url.getPara('keywordValue'),
         dateRange: '',
         goodsInfo: { goodsImg: '' },
         checkList: [],
@@ -312,6 +325,16 @@
       this.changeTaskDateBegin()
     },
     methods: {
+      fuzzyQueryChange (val) {
+        if (val) {
+          this.query.keywordValue = ''
+          this.query.preciseQuery = this.fuzzyValue
+        } else {
+          this.query.keywordValue = this.fuzzyValue
+          this.query.preciseQuery = ''
+        }
+        this.handleSearch()
+      },
       handleSelectionChange (val) {
         this.multipleSelection = val
         let copyArr1 = []
@@ -474,8 +497,22 @@
       changeUser (val) {
         this.user = val
       },
-      searchByKeyword () {
-        this.refreshPage()
+      searchByKeyword (val) {
+        this.fuzzyValue = val
+        if (this.fuzzyValue) {
+          if (this.fuzzyQuerySwich) {
+            this.query.keywordValue = ''
+            this.query.preciseQuery = this.fuzzyValue
+          } else {
+            this.query.keywordValue = this.fuzzyValue
+            this.query.preciseQuery = ''
+          }
+        } else {
+          this.query.keywordValue = ''
+          this.query.preciseQuery = ''
+        }
+        // this.refreshPage()
+        this.handleSearch()
       },
       saveGoodsRemark () {
         const self = this
