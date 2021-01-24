@@ -5,6 +5,9 @@
       <router-link :to="{ name: 'home'}" id="logo">
         运营后台
       </router-link>
+      <div id="setting-form">
+        {{$mTimeToDate(time)}}
+      </div>
 
       <!--  <div id="setting-form">
           <label>间隔时间：</label>
@@ -74,10 +77,15 @@
         menuExpecial: { // 某些特殊菜单不是在一级匹配下，如：account
 
         },
+        time: 0,
         fetchNewTaskJob: null
       }
     },
     created: function () {
+      this.getHeaderTime()
+      setInterval(() => {
+        this.getHeaderTime()
+      }, 90000)
       this.$getJson({
         url: '/user/isManager.do',
         callback: function (vue, res) {
@@ -176,6 +184,16 @@
       // console.log(this.content)
     },
     methods: {
+      getHeaderTime () {
+        this.$axios({
+          method: 'get',
+          url: '/api/shop/findTime.do'
+        }).then((response) => {
+          this.time = response.data.data.updatedAt
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
       fetchNewTask () {
         const self = this
         this.fetchNewTaskJob = setInterval(function () {
@@ -278,6 +296,10 @@
   #header #setting-form {
     position: absolute;
     left: 300px;
+    line-height: 60px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 20px;
   }
 
   #header #setting-form label, #header #setting-form span {
