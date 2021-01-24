@@ -7,6 +7,7 @@
       </router-link>
       <div id="setting-form">
         {{$mTimeToDate(time)}}
+      <el-button size="small" type="success" @click="getTimes($event)">手动更新</el-button>
       </div>
 
       <!--  <div id="setting-form">
@@ -184,6 +185,18 @@
       // console.log(this.content)
     },
     methods: {
+      getTimes () {
+        this.$axios({
+          method: 'post',
+          url: 'api/shop/manualUpdate.action'
+        }).then((response) => {
+          if (response.status === 200) {
+            this.time = new Date()
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      },
       getHeaderTime () {
         this.$axios({
           method: 'get',
