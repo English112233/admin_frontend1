@@ -189,7 +189,6 @@
     },
     methods: {
       getTimes () {
-        if (this.timeShow) return
         this.$axios({
           method: 'post',
           url: 'api/shop/manualUpdate.action'
@@ -202,6 +201,7 @@
         })
       },
       getHeaderTime () {
+        if (!this.timeShow) return
         this.$axios({
           method: 'get',
           url: '/api/shop/findTime.do'
