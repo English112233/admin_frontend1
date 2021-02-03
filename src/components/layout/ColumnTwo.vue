@@ -85,7 +85,7 @@
     },
     created: function () {
       this.getHeaderTime()
-      setInterval(() => {
+      this.timeTimer = setInterval(() => {
         this.getHeaderTime()
       }, 90000)
       const that = this
@@ -94,6 +94,7 @@
         callback: function (vue, res) {
           vue.visible = true
           that.timeShow = res.data
+          that.getHeaderTime()
           if (res.data) {
             vue.menuList.push(
               {
@@ -267,6 +268,7 @@
       }
     },
     beforeDestroy () {
+      clearInterval(this.timeTimer)
       if (this.fetchNewTaskJob) {
         clearInterval(this.fetchNewTaskJob)
         this.fetchNewTaskJob = null
